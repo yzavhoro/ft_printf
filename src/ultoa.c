@@ -15,8 +15,9 @@ static int nbr_len(size_t val, int base)
 void ltoa(char *dest, size_t val, int base, int _case)
 {
     int len;
-    char *nbs = (_case == UPPER_CASE ? "0123456789ABCDE" : "0123456789abcde");
+    char *nbs;
     
+    nbs = (_case == UPPER_CASE ? "0123456789ABCDE" : "0123456789abcde");
     len = nbr_len(val, base);
     while (len--)
     {

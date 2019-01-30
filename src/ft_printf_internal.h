@@ -3,7 +3,7 @@
 
 # include <unistd.h>
 
-# define SPECIFIERS "cspdiouxXfb%"
+# define SPECIFIERS "csCSdiouxXbp" //TODO handle float/double
 # define MIN_LONG -9223372036854775807 -1
 
 # define LOWER_CASE 0
@@ -14,14 +14,18 @@
 #define UNSET_FLAG(flags, n) ((flags) &= ~(1 << (n)))
 
 enum e_size_flags {
-	LONG,
 	LONG_LONG,
-	SHORT,
 	SHORT_SHORT,
+	LONG,
+	SHORT,
+	INTMAX_T,
+	SIZE_T,
+
+	SIZE_FLAG_MAX,
 };
 
 enum e_out_fmt_flags {
-	SHARP,
+	HASH,
 	ZERO,
 	MINUS,
 	PLUS,
@@ -33,13 +37,15 @@ enum e_out_fmt_flags {
 	PRECISION,
 }
 
-enum e_arg_types {
+enum e_conv_types {
 	CHAR,
 	STRING,
 	UNI_CHAR,
 	UNI_STRING,
 	NUMBER,
 	UNSG_NUMBER,
+
+	MAX_CONV_TYPE,
 };
 
 typedef struct		s_chunk {
@@ -57,9 +63,18 @@ typedef struct		s_output {
 typedef struct		s_flags {
 	int				width;
 	int				precision;
-	char			size_flags; /* l ll h hh */
+	char			size_flags; /* l ll h hh j z */
 	char			out_fmt_flags; /* # 0 - + space w p*/
 	int				base;
 }					t_flags;
+
+char *convert_char(void *arg, t_flags *flags);
+char *convert_string(void *arg, t_flags *flags);
+char *convert_uni_char(void *arg, t_flags *flags);
+char *convert_uni_str(void *arg, t_flags *flags);
+char *convert_nbr(void *arg, t_flags *flags);
+char *convert_unsg_nbr(void *arg, t_flags *flags);
+
+// extern char*(*f)(void *, t_flags *) g_convert_funcs[MAX_CONV_TYPE];
 
 #endif

@@ -28,8 +28,8 @@ static int	parse_format(const char *fmt, va_list arg)
 //TODO list of strings with size only at the beginning
 int	printf(const char *format, ...)
 {
-	va_list arg;
-	int printed;
+	va_list	arg;
+	int		printed;
 
 	va_start(arg, format);
 	printed = parse_format(format, arg);
