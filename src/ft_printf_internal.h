@@ -6,12 +6,26 @@
 # define SPECIFIERS "csCSdiouxXbp" //TODO handle float/double
 # define MIN_LONG -9223372036854775807 -1
 
-# define LOWER_CASE 0
-# define UPPER_CASE 1
 
 #define IS_SET(flags, n) (((flags) >> (n)) & 1)
 #define SET_FLAG(flags, n) ((flags) |= (1 << (n)))
 #define UNSET_FLAG(flags, n) ((flags) &= ~(1 << (n)))
+
+#define CHECK_UNDERFLOW(x) (if ((x) < 0) (x) = 0;)
+
+enum e_cases {
+	ANY, /* for bases <= DEC */ 
+
+	LOWER_CASE = ANY,
+	UPPER_CASE,
+}
+
+enum e_bases {
+	BIN = 2,
+	OCT = 8,
+	DEC = 10,
+	HEX = 16,
+}
 
 enum e_size_flags {
 	LONG_LONG,
@@ -74,6 +88,9 @@ char *convert_uni_char(void *arg, t_flags *flags);
 char *convert_uni_str(void *arg, t_flags *flags);
 char *convert_nbr(void *arg, t_flags *flags);
 char *convert_unsg_nbr(void *arg, t_flags *flags);
+
+void ltoa(char *dest, ssize_t val, int base, int _case);
+void ultoa(char *dest, size_t val, int base, int _case);
 
 // extern char*(*f)(void *, t_flags *) g_convert_funcs[MAX_CONV_TYPE];
 

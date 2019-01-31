@@ -7,7 +7,7 @@ static int	parse_format(const char *fmt, va_list arg)
 {
 	char	*word;
 	t_chunk	*chunk;
-	int	len;
+	int		len;
 
 	chunk = NULL;
 	while (fmt)
