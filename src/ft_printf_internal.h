@@ -2,6 +2,7 @@
 # define FT_PRINTF_INTERNAL_H
 
 # include <unistd.h>
+# include <stdlib.h>
 
 # define SPECIFIERS "csCSdiouxXbp" //TODO handle float/double
 # define MIN_LONG -9223372036854775807 -1
@@ -11,21 +12,16 @@
 #define SET_FLAG(flags, n) ((flags) |= (1 << (n)))
 #define UNSET_FLAG(flags, n) ((flags) &= ~(1 << (n)))
 
-#define CHECK_UNDERFLOW(x) (if ((x) < 0) (x) = 0;)
-
-enum e_cases {
-	ANY, /* for bases <= DEC */ 
-
-	LOWER_CASE = ANY,
-	UPPER_CASE,
-}
+#define CHECK_UNDERFLOW(x) {if ((x) < 0) (x) = 0;}
+#define CLEANUP(nb) ((nb) = (void*)(int*)(nb))
+#define IS_LONG(x) (IS_SET(x, LONG_LONG) | IS_SET(x, INTMAX_T) | IS_SET(x, SIZE_T))
 
 enum e_bases {
 	BIN = 2,
 	OCT = 8,
 	DEC = 10,
 	HEX = 16,
-}
+};
 
 enum e_size_flags {
 	LONG_LONG,
@@ -49,7 +45,8 @@ enum e_out_fmt_flags {
 
 	WIDTH = MAX_FMT_FLAG,
 	PRECISION,
-}
+	UPPERCASE,
+};
 
 enum e_conv_types {
 	CHAR,
@@ -58,6 +55,7 @@ enum e_conv_types {
 	UNI_STRING,
 	NUMBER,
 	UNSG_NUMBER,
+	POINTER,
 
 	MAX_CONV_TYPE,
 };
@@ -78,7 +76,7 @@ typedef struct		s_flags {
 	int				width;
 	int				precision;
 	char			size_flags; /* l ll h hh j z */
-	char			out_fmt_flags; /* # 0 - + space w p*/
+	char			out_fmt_flags; /* # 0 - + space w p case*/
 	int				base;
 }					t_flags;
 
@@ -90,8 +88,11 @@ char *convert_nbr(void *arg, t_flags *flags);
 char *convert_unsg_nbr(void *arg, t_flags *flags);
 
 void ltoa(char *dest, ssize_t val, int base, int _case);
+int nbr_len(size_t val, int base);
+
 void ultoa(char *dest, size_t val, int base, int _case);
 
+void parse_format(char **fmt, t_flags *flags);
 // extern char*(*f)(void *, t_flags *) g_convert_funcs[MAX_CONV_TYPE];
-
+#include <string.h>
 #endif

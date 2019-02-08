@@ -2,12 +2,12 @@
 #include <string.h>
 char str[21];
 
-static int nbr_len(size_t val, int base)
+int nbr_len(size_t val, int base)
 {
     int len;
 
     len = 1;
-    while (val /= base)
+    while ((val /= base))
         len++;
     return len;
 }
@@ -34,11 +34,4 @@ void ltoa(char *dest, ssize_t val, int base, int _case)
         *(dest + len) = nbs[val % base];
         val /= base;
     }
-}
-
-int main()
-{
-    ltoa(str, -9223372036808, 10, UPPER_CASE);
-    printf("%s\n", str);
-    return 0;
 }

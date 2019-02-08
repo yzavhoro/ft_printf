@@ -1,5 +1,10 @@
 #include "ft_printf_internal.h"
 
+static int isdigit(int c)
+{
+    return (c >= 48 && c <= 57);
+}
+
 static void handle_overlaps(char *o_fmt_fl)
 {
     if (IS_SET(*o_fmt_fl, MINUS) || IS_SET(*o_fmt_fl, PRECISION))
@@ -20,7 +25,7 @@ static void fill_size_flags(char **fmt, t_flags *flags)
     i = LONG;
     while (i < SIZE_FLAG_MAX)
     {
-        if (*fmt == size_flags[i])
+        if (**fmt == size_flags[i])
             SET_FLAG(flags->size_flags, i);
         i++;
     }
@@ -44,9 +49,9 @@ static void fill_width_pres(char **fmt, t_flags *flags)
     }
 }
 
-static void fill_flags(char **fmt, t_flags *flags)
+static void fill_out_fmt_flags(char **fmt, t_flags *flags)
 {
-    static char *out_fmt_flags = "*#0-+ ";
+    static char *out_fmt_flags = "#0-+ ";
     int i;
 
     while (**fmt)
@@ -73,5 +78,5 @@ void parse_format(char **fmt, t_flags *flags)
     fill_out_fmt_flags(fmt, flags);
     fill_width_pres(fmt, flags);
     fill_size_flags(fmt, flags);
-    handle_overlap(&(flags->out_fmt_flags));
+    handle_overlaps(&(flags->out_fmt_flags));
 }
