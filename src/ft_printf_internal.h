@@ -3,6 +3,7 @@
 
 # include <unistd.h>
 # include <stdlib.h>
+# include "libft.h"
 
 # define SPECIFIERS "csCSdiouxXbp" //TODO handle float/double
 # define MIN_LONG -9223372036854775807 -1

@@ -1,6 +1,6 @@
-NAME := printf
+NAME := ft_printf
 
-#LIB_DIR := ./libft/
+LIB_DIR := ./libft/
 SRC_DIR := ./src/
 OBJ_DIR := ./objects/
 INC_DIR := ./include/
@@ -11,11 +11,11 @@ OBJ = $(addprefix $(OBJ_DIR), $(SRCS:.c=.o))
 CC := gcc
 #FLAGS := -Wall -Wextra -Werror
 
-#LIBFT = $(LIB_DIR)libftprintf.a
-#LIBFT_FLAGS := -L $(LIB_DIR) -lft
-#LIBFT_INC := $(LIB_DIR)includes
+LIBFT = $(LIB_DIR)libftprintf.a
+LIBFT_FLAGS := -L $(LIB_DIR) -lft
+LIBFT_INC := $(LIB_DIR)include
 
-HDR_FLAGS := -I $(INC_DIR) # $(LIBFT_INC) -I $(INC_DIR)
+HDR_FLAGS := -I $(LIBFT_INC) -I $(INC_DIR)
 
 all: $(NAME)
 
@@ -30,15 +30,15 @@ $(OBJ_DIR):
 $(OBJ_DIR)%.o: $(SRC_DIR)%.c
 	$(CC) -c $< -o $@ $(FLAGS) $(HDR_FLAGS)
 
-#$(LIBFT):
-#	make -C $(LIB_DIR)
+$(LIBFT):
+	make -C $(LIB_DIR)
 
 clean:
-#	make clean -C $(LIB_DIR)
+	make clean -C $(LIB_DIR)
 	rm -f $(OBJ)
 
 fclean:
-#	make fclean -C $(LIB_DIR)
+	make fclean -C $(LIB_DIR)
 	rm -f $(NAME)
 	rm -rf $(OBJ_DIR)
 
